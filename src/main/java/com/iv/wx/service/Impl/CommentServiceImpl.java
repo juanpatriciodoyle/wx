@@ -13,10 +13,12 @@ import java.util.List;
 
 @Component
 public class CommentServiceImpl implements CommentService {
+
+    String url = "https://jsonplaceholder.typicode.com/comments/";
+
     @Override
     public List<Comment> getAll() throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/comments/";
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -26,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment getByCommentId(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/comments/"+id;
+        url+=id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -36,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getByPostId(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/comments?postId="+id;
+        url += "?postId="+id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 

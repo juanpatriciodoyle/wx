@@ -13,12 +13,12 @@ import java.util.List;
 
 @Component
 public class PostServiceImpl implements PostService {
+    String url = "https://jsonplaceholder.typicode.com/posts/";
 
 
     @Override
     public List<Post> getAll() throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/posts/";
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post getByPostId(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/posts/"+id;
+        url +=id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -38,7 +38,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getByUserId(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/posts?userId="+id;
+        url +="?userId="+id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 

@@ -50,10 +50,10 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<Album> getAlbum(@RequestParam(name = "id") Integer id);
 
-    @RequestMapping(value = "/albumByUser",
+    @RequestMapping(value = "/albumsByUser",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<Album>> getAlbumByIdUser(@RequestParam(name = "id") Integer id);
+    ResponseEntity<List<Album>> getAlbumsByIdUser(@RequestParam(name = "id") Integer id);
 
 
     //  Photos
@@ -67,10 +67,10 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<Photo> getPhoto(@RequestParam(name = "id") Integer id);
 
-    @RequestMapping(value = "/photoByUser",
+    @RequestMapping(value = "/photosByUser",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<Photo>> photoByUser(@RequestParam(name = "id") Integer id);
+    ResponseEntity<List<Photo>> photosByUser(@RequestParam(name = "id") Integer id);
 
     //  Comments
     @RequestMapping(value = "/comments",
@@ -83,10 +83,10 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<Comment> getComment(@RequestParam(name = "id") Integer id);
 
-    @RequestMapping(value = "/commentByUser",
+    @RequestMapping(value = "/commentsByUser",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<Comment>> commentByUser(@RequestParam(name = "id") Integer id);
+    ResponseEntity<List<Comment>> commentsByUser(@RequestParam(name = "id") Integer id);
 
 
 }
