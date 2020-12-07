@@ -14,11 +14,11 @@ import java.util.List;
 
 @Component
 public class UserServiceImpl implements UserService {
+    String url = "https://jsonplaceholder.typicode.com/users/";
 
     @Override
     public List<User> getAll() throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/users/";
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByUserId(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/users/"+id;
+        url+=id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 

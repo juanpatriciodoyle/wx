@@ -14,10 +14,11 @@ import java.util.List;
 @Component
 public class AlbumServiceImpl implements AlbumService {
 
+    String url = "https://jsonplaceholder.typicode.com/albums/";
+
     @Override
     public List<Album> getAll() throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/albums/";
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -27,7 +28,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public Album getByAlbumId(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/albums/"+id;
+        url += id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -37,7 +38,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public List<Album> getByIdUser(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/albums?userId="+id;
+        url += "?userId="+id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 

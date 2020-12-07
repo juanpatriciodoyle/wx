@@ -99,7 +99,7 @@ public class WxController implements WxControllerApi{
     }
 
     @Override
-    public ResponseEntity<List<Album>> getAlbumByIdUser(Integer id) {
+    public ResponseEntity<List<Album>> getAlbumsByIdUser(Integer id) {
         try {
             return ResponseEntity.ok(albumService.getByIdUser(id));
 
@@ -133,7 +133,7 @@ public class WxController implements WxControllerApi{
     }
 
     @Override
-    public ResponseEntity<List<Photo>> photoByUser(Integer id) {
+    public ResponseEntity<List<Photo>> photosByUser(Integer id) {
         try {
             List<Album> albums = albumService.getByIdUser(id);
             List<Photo> photos = new ArrayList<>();
@@ -184,7 +184,7 @@ public class WxController implements WxControllerApi{
     }
 
     @Override
-    public ResponseEntity<List<Comment>> commentByUser(Integer id) {
+    public ResponseEntity<List<Comment>> commentsByUser(Integer id) {
         try {
             List<Post> posts = postService.getByUserId(id);
             List<Comment> comments = new ArrayList<>();

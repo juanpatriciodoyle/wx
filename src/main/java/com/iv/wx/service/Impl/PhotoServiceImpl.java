@@ -15,6 +15,8 @@ import java.util.List;
 @Component
 public class PhotoServiceImpl implements PhotoService {
 
+    String url = "https://jsonplaceholder.typicode.com/photos/";
+
     @Override
     public List<Photo> getAll() throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
@@ -28,7 +30,7 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public Photo getByPhotoId(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/photos/"+id;
+        url += id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -38,7 +40,7 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public List<Photo> getByAlbumId(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://jsonplaceholder.typicode.com/photos?albumId="+id;
+        url += "?albumId="+id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
