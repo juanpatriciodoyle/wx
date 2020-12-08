@@ -1,4 +1,0 @@
-language: java
-jdk:
-	- openjdk11
-	- openjdk-14.0.2

@@ -1,9 +1,6 @@
 package com.iv.wx.controller;
 
-import com.iv.wx.model.Album;
-import com.iv.wx.model.Comment;
-import com.iv.wx.model.Photo;
-import com.iv.wx.model.Post;
+import com.iv.wx.model.*;
 import com.iv.wx.model.user.User;
 import com.iv.wx.to.SaveAlbumTo;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.List;
 
 @RequestMapping(path = "/wx")
 public interface WxControllerApi {
 
-    //  USERS
+    //  User
     @RequestMapping(value = "/user",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -29,7 +25,7 @@ public interface WxControllerApi {
     ResponseEntity<List<User>> getAllUsers();
 
     
-    //  POSTS
+    //  Post
     @RequestMapping(value = "/posts",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -60,9 +56,9 @@ public interface WxControllerApi {
     @RequestMapping(value = "/album",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<Album>> saveAlbum(@RequestBody SaveAlbumTo to);
+    ResponseEntity<SaveAlbumTo> saveAlbum(@RequestBody SaveAlbumTo to);
 
-    //  Photos
+    //  Photo
     @RequestMapping(value = "/photos",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -78,7 +74,7 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<List<Photo>> photosByUser(@RequestParam(name = "id") Integer id);
 
-    //  Comments
+    //  Comment
     @RequestMapping(value = "/comments",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -94,5 +90,11 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<List<Comment>> commentsByUser(@RequestParam(name = "id") Integer id);
 
+    //  Permission
+
+    @RequestMapping(value = "/permissionsByUser",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<Permission> getPermissionByIdUser(@RequestParam(name = "id") Integer id);
 
 }

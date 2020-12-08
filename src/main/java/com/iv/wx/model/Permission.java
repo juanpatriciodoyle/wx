@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class Permissions {
-    private Integer id;
+public class Permission {
     private Integer userId;
     private Integer[] read;
     private Integer[] write;

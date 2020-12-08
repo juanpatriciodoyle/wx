@@ -1,8 +1,5 @@
 # ![pageres](src/main/resources/W.png)
 
-![Build Status](https://travis-ci.org/juanpatriciodoyle/wx.svg?branch=dev)
-
-
 
 Information  consumed from the next external service that counts
 with the data of users, their albums and their photos; in addition to their posts and

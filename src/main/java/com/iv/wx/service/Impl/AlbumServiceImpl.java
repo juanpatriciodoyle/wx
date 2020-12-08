@@ -7,6 +7,7 @@ import com.iv.wx.model.Album;
 import com.iv.wx.service.AlbumService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Album getById(Integer id) throws JsonProcessingException {
+    public Album getById(Integer id) throws JsonProcessingException, HttpClientErrorException {
         RestTemplate restTemplate = new RestTemplate();
         url += id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
@@ -37,7 +38,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<Album> getByIdUser(Integer id) throws JsonProcessingException {
+    public List<Album> getByIdUser(Integer id) throws JsonProcessingException, HttpClientErrorException {
         RestTemplate restTemplate = new RestTemplate();
         url += "?userId="+id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
@@ -48,6 +49,9 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public Optional<Album> save(Album album) {
-        return Optional.empty();
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Album> request = restTemplate.postForEntity(url, album, Album.class);
+
+        return Optional.ofNullable(request.getBody());
     }
 }

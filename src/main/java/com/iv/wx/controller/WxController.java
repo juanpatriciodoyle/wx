@@ -1,10 +1,7 @@
 package com.iv.wx.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.iv.wx.model.Album;
-import com.iv.wx.model.Comment;
-import com.iv.wx.model.Photo;
-import com.iv.wx.model.Post;
+import com.iv.wx.model.*;
 import com.iv.wx.model.user.User;
 import com.iv.wx.service.*;
 import com.iv.wx.to.SaveAlbumTo;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log
@@ -28,6 +26,7 @@ public class WxController implements WxControllerApi{
     private final AlbumService albumService;
     private final PhotoService photoService;
     private final CommentService commentService;
+    private final PermissionService permissionService;
 
     //  User
     @Override
@@ -36,7 +35,7 @@ public class WxController implements WxControllerApi{
         try {
             return ResponseEntity.ok(userService.getById(id));
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -47,7 +46,7 @@ public class WxController implements WxControllerApi{
         try {
             return ResponseEntity.ok(userService.getAll());
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
@@ -59,7 +58,7 @@ public class WxController implements WxControllerApi{
         try {
             return ResponseEntity.ok(postService.getAll());
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
@@ -70,7 +69,7 @@ public class WxController implements WxControllerApi{
         try {
             return ResponseEntity.ok(postService.getById(id));
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
@@ -82,7 +81,7 @@ public class WxController implements WxControllerApi{
         try {
             return ResponseEntity.ok(albumService.getAll());
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
@@ -93,7 +92,7 @@ public class WxController implements WxControllerApi{
         try {
             return ResponseEntity.ok(albumService.getById(id));
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
@@ -111,8 +110,23 @@ public class WxController implements WxControllerApi{
     }
 
     @Override
-    public ResponseEntity<List<Album>> saveAlbum(SaveAlbumTo to) {
-        return null;
+    public ResponseEntity<SaveAlbumTo> saveAlbum(SaveAlbumTo request) {
+        Optional<Album> album = albumService.save(request.getAlbum());
+        if (album.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        Optional<User> user = userService.save(request.getUser());
+        if (user.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+
+
+        SaveAlbumTo response = SaveAlbumTo.builder()
+                .album(album.get())
+                .user(user.get())
+                .read(request.getRead())
+                .write(request.getWrite())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     //  Photo
@@ -121,7 +135,7 @@ public class WxController implements WxControllerApi{
         try {
             return ResponseEntity.ok(photoService.getAll());
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
@@ -132,7 +146,7 @@ public class WxController implements WxControllerApi{
         try {
             return ResponseEntity.ok(photoService.getById(id));
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
@@ -172,7 +186,7 @@ public class WxController implements WxControllerApi{
         try {
             return ResponseEntity.ok(commentService.getAll());
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
@@ -183,7 +197,7 @@ public class WxController implements WxControllerApi{
         try {
             return ResponseEntity.ok(commentService.getById(id));
 
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
@@ -215,5 +229,17 @@ public class WxController implements WxControllerApi{
 
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    //  Permission
+    @Override
+    public ResponseEntity<Permission> getPermissionByIdUser(Integer id) {
+        try {
+            return ResponseEntity.ok(permissionService.getByIdUser(id));
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
     }
 }
