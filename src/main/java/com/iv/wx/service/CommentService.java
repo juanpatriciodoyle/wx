@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CommentService {
     List<Comment> getAll() throws JsonProcessingException;
-    Comment getByCommentId(Integer id) throws JsonProcessingException;
+    Comment getById(Integer id) throws JsonProcessingException;
     List<Comment> getByPostId(Integer id) throws JsonProcessingException;
 }

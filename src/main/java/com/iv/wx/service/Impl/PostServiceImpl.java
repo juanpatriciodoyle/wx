@@ -26,7 +26,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post getByPostId(Integer id) throws JsonProcessingException {
+    public Post getById(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         url +=id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);

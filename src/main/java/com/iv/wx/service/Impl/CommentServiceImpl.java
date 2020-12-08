@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getByCommentId(Integer id) throws JsonProcessingException {
+    public Comment getById(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         url+=id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);

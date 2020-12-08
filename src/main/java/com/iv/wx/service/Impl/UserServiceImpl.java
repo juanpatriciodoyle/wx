@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserServiceImpl implements UserService {
@@ -26,13 +27,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByUserId(Integer id) throws JsonProcessingException {
+    public User getById(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         url+=id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
         return objectMapper.readValue(response.getBody(), User.class);
+    }
+
+    @Override
+    public Optional<User> save(User user) {
+        return Optional.empty();
     }
 
 }

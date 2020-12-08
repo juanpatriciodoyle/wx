@@ -28,7 +28,7 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public Photo getByPhotoId(Integer id) throws JsonProcessingException {
+    public Photo getById(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         url += id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);

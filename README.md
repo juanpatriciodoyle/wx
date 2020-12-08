@@ -18,7 +18,7 @@ This information on the service is accessible through this API, contemplating:
 7. Bring in all users who have a certain permission regarding a specific album.
 
 
-*See [Challenge](/Challenge Tasks) for the details of the tasks.*
+*See [Challenge](./Challenge Tasks) for the details of the tasks.*
 
 ## Example usage on localhost
 ##### Get all Users

@@ -5,7 +5,9 @@ import com.iv.wx.model.Comment;
 import com.iv.wx.model.Photo;
 import com.iv.wx.model.Post;
 import com.iv.wx.model.user.User;
+import com.iv.wx.to.SaveAlbumTo;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,6 +57,10 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<List<Album>> getAlbumsByIdUser(@RequestParam(name = "id") Integer id);
 
+    @RequestMapping(value = "/album",
+            produces = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<List<Album>> saveAlbum(@RequestBody SaveAlbumTo to);
 
     //  Photos
     @RequestMapping(value = "/photos",

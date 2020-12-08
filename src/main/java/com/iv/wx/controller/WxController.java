@@ -7,6 +7,7 @@ import com.iv.wx.model.Photo;
 import com.iv.wx.model.Post;
 import com.iv.wx.model.user.User;
 import com.iv.wx.service.*;
+import com.iv.wx.to.SaveAlbumTo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class WxController implements WxControllerApi{
     public ResponseEntity<User> getUser(Integer id) {
 
         try {
-            return ResponseEntity.ok(userService.getByUserId(id));
+            return ResponseEntity.ok(userService.getById(id));
 
         } catch (JsonProcessingException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,7 +68,7 @@ public class WxController implements WxControllerApi{
     @Override
     public ResponseEntity<Post> getPost(Integer id) {
         try {
-            return ResponseEntity.ok(postService.getByPostId(id));
+            return ResponseEntity.ok(postService.getById(id));
 
         } catch (JsonProcessingException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -90,7 +91,7 @@ public class WxController implements WxControllerApi{
     @Override
     public ResponseEntity<Album> getAlbum(Integer id) {
         try {
-            return ResponseEntity.ok(albumService.getByAlbumId(id));
+            return ResponseEntity.ok(albumService.getById(id));
 
         } catch (JsonProcessingException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -109,6 +110,11 @@ public class WxController implements WxControllerApi{
         }
     }
 
+    @Override
+    public ResponseEntity<List<Album>> saveAlbum(SaveAlbumTo to) {
+        return null;
+    }
+
     //  Photo
     @Override
     public ResponseEntity<List<Photo>> getAllPhotos() {
@@ -124,7 +130,7 @@ public class WxController implements WxControllerApi{
     @Override
     public ResponseEntity<Photo> getPhoto(Integer id) {
         try {
-            return ResponseEntity.ok(photoService.getByPhotoId(id));
+            return ResponseEntity.ok(photoService.getById(id));
 
         } catch (JsonProcessingException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -175,7 +181,7 @@ public class WxController implements WxControllerApi{
     @Override
     public ResponseEntity<Comment> getComment(Integer id) {
         try {
-            return ResponseEntity.ok(commentService.getByCommentId(id));
+            return ResponseEntity.ok(commentService.getById(id));
 
         } catch (JsonProcessingException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

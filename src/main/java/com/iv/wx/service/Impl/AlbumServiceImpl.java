@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class AlbumServiceImpl implements AlbumService {
@@ -26,7 +27,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Album getByAlbumId(Integer id) throws JsonProcessingException {
+    public Album getById(Integer id) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         url += id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
@@ -43,5 +44,10 @@ public class AlbumServiceImpl implements AlbumService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         return objectMapper.readValue(response.getBody(), new TypeReference<>() {});
+    }
+
+    @Override
+    public Optional<Album> save(Album album) {
+        return Optional.empty();
     }
 }

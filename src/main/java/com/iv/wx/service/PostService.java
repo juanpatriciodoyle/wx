@@ -8,6 +8,6 @@ import java.util.List;
 public interface PostService {
 
     List<Post> getAll() throws JsonProcessingException;
-    Post getByPostId(Integer id) throws JsonProcessingException;
+    Post getById(Integer id) throws JsonProcessingException;
     List<Post> getByUserId(Integer id) throws JsonProcessingException;
 }
