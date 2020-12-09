@@ -4,14 +4,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.iv.wx.model.*;
 import com.iv.wx.model.user.User;
 import com.iv.wx.service.*;
+import com.iv.wx.to.PermissionsRequestTo;
 import com.iv.wx.to.SaveAlbumRequestTo;
 import com.iv.wx.to.SaveAlbumResponseTo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Console;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,6 +47,31 @@ public class WxController implements WxControllerApi {
     public ResponseEntity<List<User>> getAllUsers() {
         try {
             return ResponseEntity.ok(userService.getAll());
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<User>> getAllUsersByPermissions(Integer albumId, Boolean write, Boolean read) {
+        PermissionsRequestTo permissionsRequestTo = PermissionsRequestTo.builder()
+                .albumId(albumId)
+                .write(write)
+                .read(read)
+                .build();
+        try {
+            List<User> users = new ArrayList<>();
+            Optional<List<Integer>> usersIds = permissionService.getUsersByPermissionAndAlbum(permissionsRequestTo);
+            usersIds.ifPresent(idList -> idList.forEach(id -> {
+                try {
+                    users.add(userService.getById(id));
+                } catch (Exception e) {
+                    log.warning("Error while getting user with id: "+id);
+                }
+            }));
+            return ResponseEntity.ok(users);
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -130,9 +158,9 @@ public class WxController implements WxControllerApi {
             Optional<User> newUser = userService.save(request.getUser());
             if (newUser.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             user = newUser.get();
-        }else {
+        } else {
             try {
-               user = userService.getById(request.getUser().getId());
+                user = userService.getById(request.getUser().getId());
 
             } catch (JsonProcessingException e) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -293,8 +321,46 @@ public class WxController implements WxControllerApi {
     }
 
     @Override
+    public ResponseEntity<Permission> changePermissions(Integer id, PermissionsRequestTo permissionsRequestTo) {
+        try {
+            Optional<Permission> optionalPermission = permissionService.getByIdUser(id);
+            if (optionalPermission.isPresent()) {
+                Permission permission = optionalPermission.get();
+                Integer albumId = permissionsRequestTo.getAlbumId();
+                List<Integer> reads = new ArrayList<>(Arrays.asList(permission.getRead().clone()));
+                List<Integer> writes = new ArrayList<>(Arrays.asList(permission.getWrite().clone()));
+
+                if (permissionsRequestTo.getRead()) {
+                    if (!reads.contains(albumId)) reads.add(albumId);
+                } else {
+                    reads.remove(albumId);
+                }
+                permission.setRead(reads.toArray(new Integer[0]));
+
+                if (permissionsRequestTo.getWrite()) {
+                    if (!writes.contains(albumId)) writes.add(albumId);
+                } else {
+                    writes.remove(albumId);
+                }
+                permission.setWrite(writes.toArray(new Integer[0]));
+
+                Optional<Permission> response = permissionService.save(permission);
+                return response.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
+    }
+
+    @Override
     public ResponseEntity<Permission> savePermission(Permission permission) {
         Optional<Permission> permissionSaved = permissionService.save(permission);
         return permissionSaved.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+
 }

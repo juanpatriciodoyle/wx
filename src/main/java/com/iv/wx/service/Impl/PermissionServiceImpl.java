@@ -5,12 +5,17 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iv.wx.model.Permission;
 import com.iv.wx.service.PermissionService;
+import com.iv.wx.to.PermissionsRequestTo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class PermissionServiceImpl implements PermissionService {
@@ -45,6 +50,31 @@ public class PermissionServiceImpl implements PermissionService {
         }catch (HttpClientErrorException e){
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<List<Integer>> getUsersByPermissionAndAlbum(PermissionsRequestTo permissionsRequestTo) throws JsonProcessingException {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            List<Integer> users = new ArrayList<>();
+            List<Permission> permissionList = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
+            if (permissionList.isEmpty()) return Optional.empty();
+            permissionList = sortByAlbumReadAndWrite(permissionList, permissionsRequestTo);
+            permissionList.forEach(permission -> users.add(permission.getUserId()));
+            return Optional.of(users);
+
+        }catch (HttpClientErrorException e){
+            return Optional.empty();
+        }
+    }
+
+    private List<Permission> sortByAlbumReadAndWrite(List<Permission> permissionList, PermissionsRequestTo permissionsRequestTo){
+        List<Permission> permissions = new ArrayList<>();
+        permissions.addAll(permissionList.stream().filter(permission -> Arrays.asList(permission.getRead()).contains(permissionsRequestTo.getAlbumId())).collect(Collectors.toList()));
+        permissions.addAll(permissionList.stream().filter(permission -> Arrays.asList(permission.getWrite()).contains(permissionsRequestTo.getAlbumId())).collect(Collectors.toList()));
+        return permissions;
     }
 
 }

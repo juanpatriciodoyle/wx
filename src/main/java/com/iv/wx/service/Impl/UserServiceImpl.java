@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getById(Integer id) throws JsonProcessingException, HttpClientErrorException {
         RestTemplate restTemplate = new RestTemplate();
-        url+=id;
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        String url_get = url+id;
+        ResponseEntity<String> response = restTemplate.getForEntity(url_get, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
 
         return objectMapper.readValue(response.getBody(), User.class);

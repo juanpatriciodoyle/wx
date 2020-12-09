@@ -2,6 +2,7 @@ package com.iv.wx.controller;
 
 import com.iv.wx.model.*;
 import com.iv.wx.model.user.User;
+import com.iv.wx.to.PermissionsRequestTo;
 import com.iv.wx.to.SaveAlbumRequestTo;
 import com.iv.wx.to.SaveAlbumResponseTo;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,11 @@ public interface WxControllerApi {
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<User>> getAllUsers();
+
+    @RequestMapping(value = "/usersByPermission",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<User>> getAllUsersByPermissions(@RequestParam Integer albumId, @RequestParam(required = false) Boolean write , @RequestParam(required = false) Boolean read);
 
     @RequestMapping(value = "/user",
             produces = {"application/json"},
@@ -96,11 +102,15 @@ public interface WxControllerApi {
     ResponseEntity<List<Comment>> commentsByUser(@RequestParam(name = "id") Integer id);
 
     //  Permission
-
     @RequestMapping(value = "/permissionsByUser",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<Permission> getPermissionByIdUser(@RequestParam(name = "id") Integer id);
+
+    @RequestMapping(value = "/permissionsByUserAndAlbum",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<Permission> changePermissions(@RequestParam(name = "id") Integer id, @RequestBody PermissionsRequestTo permissionsRequestTo);
 
     @RequestMapping(value = "/permission",
             produces = {"application/json"},
