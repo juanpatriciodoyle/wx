@@ -13,7 +13,6 @@ class WxAlbumTest {
 
     private final String url = "http://localhost:8080/wx";
 
-
     @Test
     void getAlbums() {
         RestTemplate restTemplate = new RestTemplate();

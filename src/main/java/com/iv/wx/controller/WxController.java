@@ -30,7 +30,7 @@ public class WxController implements WxControllerApi {
     private final CommentService commentService;
     private final PermissionService permissionService;
 
-    //  User
+    /** Returns User by the user_id given **/
     @Override
     public ResponseEntity<User> getUser(Integer id) {
 
@@ -43,6 +43,7 @@ public class WxController implements WxControllerApi {
 
     }
 
+    /** Returns all Users found in the Placeholder **/
     @Override
     public ResponseEntity<List<User>> getAllUsers() {
         try {
@@ -54,6 +55,7 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /** Returns all Users regarding a specific album with a certain kind of permissions **/
     @Override
     public ResponseEntity<List<User>> getAllUsersByPermissions(Integer albumId, Boolean write, Boolean read) {
         PermissionsRequestTo permissionsRequestTo = PermissionsRequestTo.builder()
@@ -79,6 +81,7 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /** Creates and returns the new User requested **/
     @Override
     public ResponseEntity<User> saveUser(User user) {
         Optional<User> userSaved = userService.save(user);
@@ -87,7 +90,7 @@ public class WxController implements WxControllerApi {
         return new ResponseEntity<>(userSaved.get(), HttpStatus.ACCEPTED);
     }
 
-    //  Post
+    /** Returns all Posts found in the Placeholder **/
     @Override
     public ResponseEntity<List<Post>> getAllPosts() {
         try {
@@ -99,6 +102,7 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /** Returns Post by the post_id given **/
     @Override
     public ResponseEntity<Post> getPost(Integer id) {
         try {
@@ -110,7 +114,7 @@ public class WxController implements WxControllerApi {
         }
     }
 
-    //  Album
+    /** Returns all Albums found in the Placeholder **/
     @Override
     public ResponseEntity<List<Album>> getAllAlbums() {
         try {
@@ -122,6 +126,7 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /** Returns Album by the album_id given **/
     @Override
     public ResponseEntity<Album> getAlbum(Integer id) {
         try {
@@ -133,6 +138,7 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /** Returns all Albums that corresponds to the user_id given **/
     @Override
     public ResponseEntity<List<Album>> getAlbumsByIdUser(Integer id) {
         try {
@@ -144,6 +150,12 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /**
+     * Register an album shared with a user and their permissions
+     * User can be new
+     * Doesn't matter if user have already some Permissions stored
+     * Album must be new
+     * **/
     @Override
     public ResponseEntity<SaveAlbumResponseTo> register(SaveAlbumRequestTo request) {
 
@@ -204,7 +216,7 @@ public class WxController implements WxControllerApi {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    //  Photo
+    /** Returns all Photos found in the Placeholder **/
     @Override
     public ResponseEntity<List<Photo>> getAllPhotos() {
         try {
@@ -216,6 +228,7 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /** Returns Photo by the photo_id given **/
     @Override
     public ResponseEntity<Photo> getPhoto(Integer id) {
         try {
@@ -227,6 +240,10 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /**
+     * Returns a List of Photos that corresponds to the user_id given
+     *  If there are none, a 404(Not Found) error will be returned
+     *  **/
     @Override
     public ResponseEntity<List<Photo>> photosByUser(Integer id) {
         try {
@@ -249,13 +266,13 @@ public class WxController implements WxControllerApi {
             }
 
         } catch (JsonProcessingException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //  Comment
+    /** Returns all Comments found in the Placeholder **/
     @Override
     public ResponseEntity<List<Comment>> getAllComments() {
         try {
@@ -267,6 +284,7 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /** Returns Comment by the comment_id given **/
     @Override
     public ResponseEntity<Comment> getComment(Integer id) {
         try {
@@ -278,6 +296,10 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /**
+     * Returns a List of Comments that corresponds to the user_id given
+     *  If there are none, a 404(Not Found) error will be returned
+     *  **/
     @Override
     public ResponseEntity<List<Comment>> commentsByUser(Integer id) {
         try {
@@ -292,7 +314,7 @@ public class WxController implements WxControllerApi {
                     try {
                         comments.addAll(commentService.getByPostId(idPost));
                     } catch (JsonProcessingException e) {
-                        e.printStackTrace();
+                        log.warning("Error while getting Comment with user id: "+id);
                     }
 
                 });
@@ -300,13 +322,13 @@ public class WxController implements WxControllerApi {
             }
 
         } catch (JsonProcessingException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //  Permission
+    /** Returns all Permissions that corresponds to the given user_id **/
     @Override
     public ResponseEntity<Permission> getPermissionByIdUser(Integer id) {
         try {
@@ -320,8 +342,16 @@ public class WxController implements WxControllerApi {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    /** Returns the updated Permissions to an specific album for the requested user **/
     @Override
-    public ResponseEntity<Permission> changePermissions(Integer id, PermissionsRequestTo permissionsRequestTo) {
+    public ResponseEntity<Permission> changePermissions(Integer id, Integer album_id, Boolean write , Boolean read) {
+
+        PermissionsRequestTo permissionsRequestTo = PermissionsRequestTo.builder()
+                .albumId(album_id)
+                .write(write)
+                .read(read)
+                .build();
+
         try {
             Optional<Permission> optionalPermission = permissionService.getByIdUser(id);
             if (optionalPermission.isPresent()) {
@@ -356,6 +386,7 @@ public class WxController implements WxControllerApi {
         }
     }
 
+    /** Creates and returns the new Permission requested **/
     @Override
     public ResponseEntity<Permission> savePermission(Permission permission) {
         Optional<Permission> permissionSaved = permissionService.save(permission);

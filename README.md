@@ -1,4 +1,6 @@
 # ![pageres](src/main/resources/W.png)
+![Days](https://img.shields.io/static/v1?label=Working-Days&message=2&color=blue)
+![Status](https://img.shields.io/static/v1?label=Done&message=100%&color=green)
 
 
 Information  consumed from the next external service that counts
@@ -17,10 +19,10 @@ This information on the service is accessible through this API, contemplating:
 
 *See [Challenge](./Challenge Tasks) for the details of the tasks.*
 
-## Example usage on localhost
+## Example implementation on localhost
 ##### Get all Users
 ```java
-class WxUserTests {
+class WxUser {
 
     private final String url = "http://localhost:8080/wx";
 
@@ -32,69 +34,125 @@ class WxUserTests {
 ```
 
 ## API Endpoints
-Params: `id: Integer`
 
 Base path: `/wx`
 
 
-#### Users
-###### Get All Users
+### Users
+##### Get All Users
     
     /users
     
-###### Get User by id
+##### Get User by id
+Params: `id: Integer`
 
     /users?id=#
 
-##### Photos
-###### Get all Photos
+##### Get all Users by Permissions
+###### Params required: 
+`albumId: Integer`
+
+######Params not required:
+`read: Boolean`
+`write: Boolean`
+
+    /usersByPermission?albumId=#&read=#&write=#
+
+##### Save User
+###### There is a @RequestBody expected
+
+    /user
+
+### Photos
+##### Get all Photos
 
     /photos
 
-###### Get Photos by id
+##### Get Photos by id
+###### Params:
+`id: Integer`
 
-    /photos?id=#
+    /photo?id=#
 
-###### Get all Photos by User id
+##### Get all Photos by User id
+###### Params:
+`id: Integer`
 
     /photosByUser?id=#
 
-
-##### Albums
-###### Get all Albums 
+### Albums
+##### Get all Albums 
     
     /albums
 
-###### Get all Albums by id
+##### Get all Albums by id
+###### Params:
+`id: Integer`
 
-    /albums?id=#
+    /album?id=#
 
-###### Get all Albums by User id
+##### Get all Albums by User id
+###### Params:
+`id: Integer`
 
     /albumsByUser?id=#
 
-##### Posts
-###### Get all Posts
-    
+##### Register an album shared with a user and their permissions
+###### There is a @RequestBody expected
+
+    /register
+
+### Posts
+##### Get all Posts
+
     /posts
 
-###### Get all Posts by id
+##### Get all Posts by id
+###### Params:
+`id: Integer`
 
-    /posts?id=#
+    /post?id=#
 
-##### Comments
-###### Get all Posts
+### Comments
+##### Get all Posts
 
     /comments
 
-###### Get all Posts by id
+##### Get all Posts by id
+###### Params:
+`id: Integer`
 
-    /comments?id=1
+    /comment?id=#
 
-###### Get all Posts by User id
+##### Get all Posts by User id
+###### Params:
+`id: Integer`
 
-    /commentsByUser?id=1
+    /commentsByUser?id=#
+
+### Permissions
+##### Get all Permissions by User id
+###### Params:
+`id: Integer`
+
+    /permissionsByUser?id=#
+
+##### Change Permissions
+###### Params:
+`id: Integer`
+`albumId: Integer`
+`read: Boolean`
+`write: Boolean`
+
+    /permissionsByUserAndAlbum?id=#&albumId=#&read=#&write=#
+
+##### Register a Permission
+###### There is a @RequestBody expected
+
+    /permission
 
 
-Coded with ❤️   by Juan Patricio Doyle ✨2020
+
+
+Coded with ❤️ by Juan Patricio Doyle ✨2020
 

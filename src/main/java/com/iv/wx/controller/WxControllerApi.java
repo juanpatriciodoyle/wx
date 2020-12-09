@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping(path = "/wx")
 public interface WxControllerApi {
 
-    //  User
     @RequestMapping(value = "/user",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -36,7 +35,6 @@ public interface WxControllerApi {
             method = RequestMethod.POST)
     ResponseEntity<User> saveUser(@RequestBody User user);
 
-    //  Post
     @RequestMapping(value = "/posts",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -47,8 +45,6 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<Post> getPost(@RequestParam(name = "id") Integer id);
 
-    
-    //  Album
     @RequestMapping(value = "/albums",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -69,7 +65,6 @@ public interface WxControllerApi {
             method = RequestMethod.POST)
     ResponseEntity<SaveAlbumResponseTo> register(@RequestBody SaveAlbumRequestTo to);
 
-    //  Photo
     @RequestMapping(value = "/photos",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -85,7 +80,6 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<List<Photo>> photosByUser(@RequestParam(name = "id") Integer id);
 
-    //  Comment
     @RequestMapping(value = "/comments",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -101,7 +95,6 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<List<Comment>> commentsByUser(@RequestParam(name = "id") Integer id);
 
-    //  Permission
     @RequestMapping(value = "/permissionsByUser",
             produces = {"application/json"},
             method = RequestMethod.GET)
@@ -110,7 +103,7 @@ public interface WxControllerApi {
     @RequestMapping(value = "/permissionsByUserAndAlbum",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<Permission> changePermissions(@RequestParam(name = "id") Integer id, @RequestBody PermissionsRequestTo permissionsRequestTo);
+    ResponseEntity<Permission> changePermissions(@RequestParam(name = "id") Integer id, @RequestParam Integer albumId, @RequestParam Boolean write , @RequestParam Boolean read);
 
     @RequestMapping(value = "/permission",
             produces = {"application/json"},
