@@ -7,6 +7,7 @@ import com.iv.wx.model.Comment;
 import com.iv.wx.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getByCommentId(Integer id) throws JsonProcessingException {
+    public Comment getById(Integer id) throws JsonProcessingException, HttpClientErrorException {
         RestTemplate restTemplate = new RestTemplate();
         url+=id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);

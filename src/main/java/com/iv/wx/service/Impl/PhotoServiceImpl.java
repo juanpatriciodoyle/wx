@@ -8,6 +8,7 @@ import com.iv.wx.model.Post;
 import com.iv.wx.service.PhotoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public Photo getByPhotoId(Integer id) throws JsonProcessingException {
+    public Photo getById(Integer id) throws JsonProcessingException, HttpClientErrorException {
         RestTemplate restTemplate = new RestTemplate();
         url += id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);

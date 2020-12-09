@@ -1,5 +1,0 @@
-language: java
-java:
-	- '14'
-	- '11'
-	- '8'

@@ -7,6 +7,7 @@ import com.iv.wx.model.Post;
 import com.iv.wx.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post getByPostId(Integer id) throws JsonProcessingException {
+    public Post getById(Integer id) throws JsonProcessingException, HttpClientErrorException {
         RestTemplate restTemplate = new RestTemplate();
         url +=id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
