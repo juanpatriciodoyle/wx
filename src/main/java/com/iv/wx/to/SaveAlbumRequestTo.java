@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveAlbumTo {
+public class SaveAlbumRequestTo {
     private Album album;
     private User user;
     private Boolean write;

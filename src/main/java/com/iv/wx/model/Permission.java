@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class Permission {
+    private Integer id;
     private Integer userId;
     private Integer[] read;
     private Integer[] write;

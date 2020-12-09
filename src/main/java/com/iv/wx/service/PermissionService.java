@@ -9,7 +9,6 @@ import java.util.Optional;
 public interface PermissionService {
 
     Optional<Permission> save(Permission permission);
-    Permission getByIdUser(Integer id) throws JsonProcessingException;
-    Boolean delete(Integer id);
+    Optional<Permission> getByIdUser(Integer id) throws JsonProcessingException;
 
 }

@@ -2,7 +2,8 @@ package com.iv.wx.controller;
 
 import com.iv.wx.model.*;
 import com.iv.wx.model.user.User;
-import com.iv.wx.to.SaveAlbumTo;
+import com.iv.wx.to.SaveAlbumRequestTo;
+import com.iv.wx.to.SaveAlbumResponseTo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,11 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<List<User>> getAllUsers();
 
-    
+    @RequestMapping(value = "/user",
+            produces = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<User> saveUser(@RequestBody User user);
+
     //  Post
     @RequestMapping(value = "/posts",
             produces = {"application/json"},
@@ -53,10 +58,10 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<List<Album>> getAlbumsByIdUser(@RequestParam(name = "id") Integer id);
 
-    @RequestMapping(value = "/album",
+    @RequestMapping(value = "/register",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<SaveAlbumTo> saveAlbum(@RequestBody SaveAlbumTo to);
+    ResponseEntity<SaveAlbumResponseTo> register(@RequestBody SaveAlbumRequestTo to);
 
     //  Photo
     @RequestMapping(value = "/photos",
@@ -97,4 +102,8 @@ public interface WxControllerApi {
             method = RequestMethod.GET)
     ResponseEntity<Permission> getPermissionByIdUser(@RequestParam(name = "id") Integer id);
 
+    @RequestMapping(value = "/permission",
+            produces = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<Permission> savePermission(@RequestBody Permission permission);
 }

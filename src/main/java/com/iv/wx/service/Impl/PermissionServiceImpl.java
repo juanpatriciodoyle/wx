@@ -8,7 +8,6 @@ import com.iv.wx.service.PermissionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Optional;
@@ -21,33 +20,31 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public Optional<Permission> save(Permission permission) {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Permission> request = restTemplate.postForEntity(url, permission, Permission.class);
+        if (permission.getId() == null){
+            return Optional.ofNullable(restTemplate.postForEntity(url, permission, Permission.class).getBody());
 
-        return Optional.ofNullable(request.getBody());
-    }
-
-    @Override
-    public Permission getByIdUser(Integer id) throws JsonProcessingException, HttpClientErrorException {
-        RestTemplate restTemplate = new RestTemplate();
-        url = url.substring(0,url.length()-1)+"?userId="+id;
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        List<Permission> permissions = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
-        return permissions.get(0);
-    }
-
-    @Override
-    public Boolean delete(Integer id) {
-        RestTemplate restTemplate = new RestTemplate();
-        url = url.substring(0,url.length()-1)+"?userId="+id;
-        try{
-            restTemplate.delete(url);
-            return true;
-
-        }catch (RestClientException e){
-            return false;
+        }else {
+            String url_put = url + permission.getId();
+            restTemplate.put(url_put, permission);
+            return Optional.of(permission);
 
         }
     }
+
+    @Override
+    public Optional<Permission> getByIdUser(Integer id) throws JsonProcessingException {
+        RestTemplate restTemplate = new RestTemplate();
+        String url_user = url.substring(0,url.length()-1)+"?userId="+id;
+        ResponseEntity<String> response = restTemplate.getForEntity(url_user, String.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            List<Permission> permissions = objectMapper.readValue(response.getBody(), new TypeReference<>() {});
+            if (permissions.isEmpty()) return Optional.empty();
+            return Optional.of(permissions.get(0));
+
+        }catch (HttpClientErrorException e){
+            return Optional.empty();
+        }
+    }
+
 }
