@@ -1,8 +1,11 @@
-Bases del ejercicio
+#Bases del ejercicio
 El objetivo es desarrollar una API para consumir un servicio externo y utilizar su información, además se tiene que ampliar el scope del desarrollo agregando una funcionalidad más que permita persistir información nueva el sistema relacionada con los datos de la API externa.
+
 El único requisito obligatorio es usar Java con Spring Boot como tecnología de desarrollo y alojar en un repositorio en Github o Gitlab, como asi también ir commiteando a medida que se realizan avances, inclusive si estos contemplan correcciones/cambios que se van realizando a lo largo de la resolución, y no tod0 en un solo commit. Como regla general, 10-20 commits suele ser razonable, siendo 1-5 muy poco y más de 30 demasiado.
-Problema de negocio
-Se tiene que consumir información del siguiente servicio externo que cuenta con los datos de usuarios, sus álbumes y sus fotos; además de sus posts y los comentarios de otros usuarios sobre ellos: https://jsonplaceholder.typicode.com/ De la información del servicio se tiene que poder acceder a través de nuestra API a: 1. Los usuarios.
+
+#Problema de negocio
+Se tiene que consumir información del siguiente servicio externo que cuenta con los datos de usuarios, sus álbumes y sus fotos; además de sus posts y los comentarios de otros usuarios sobre ellos: https://jsonplaceholder.typicode.com/ De la información del servicio se tiene que poder acceder a través de nuestra API a: 
+1. Los usuarios.
 2. Las fotos.
 3. Los álbumes del sistema y de cada usuario.
 4. Plus: Las fotos de un usuario.
